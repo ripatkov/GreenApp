@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_id": "greenapp-5fec0",
+    "project_number": "415061378501",
+    "name": "GreenApp"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415061378501:android:0478f8f744063b40",
+        "client_id": "android:com.example.roman.greenapp",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.example.roman.greenapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415061378501-k5t34phdr48cha9qdq0kdbs9hgo4qk5i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.roman.greenapp",
+            "certificate_hash": "700E7A1DEC02B19CDC14329E8ABDA34604BC3288"
+          }
+        },
+        {
+          "client_id": "415061378501-smookelt1i4b534h11mhif20fpctt3r2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

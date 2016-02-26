@@ -2,6 +2,7 @@ package com.example.roman.greenapp;
 
 
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -24,6 +25,7 @@ public class DisasterFragment extends Fragment {
     private CheckBox mSolvedCheckBox;
     private TextView mLatitudeTextView, mLongitudeTextView, mAltitudeTextView;
     public static final String EXTRA_DISASTER_ID="com.example.roman.ecologyapp.disaster_id";
+    private static final String DIALOG_DATE = "date";
 
     public DisasterFragment() {
     }
@@ -68,7 +70,15 @@ public class DisasterFragment extends Fragment {
         mDateButton = (Button)rootView.findViewById(R.id.disaster_date);
         //mDateButton.setText(DateFormat.getDateTimeInstance().format(mDisaster.getDate()));
         mDateButton.setText(mDisaster.getDate().toString());
-        mDateButton.setEnabled(false);
+        //mDateButton.setEnabled(false);
+        mDateButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                FragmentManager fm = getActivity()
+                        .getFragmentManager();
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(fm,DIALOG_DATE);
+            }
+        });
 
         mSolvedCheckBox=(CheckBox)rootView.findViewById(R.id.disaster_solved);
         mSolvedCheckBox.setChecked(mDisaster.isSolved());

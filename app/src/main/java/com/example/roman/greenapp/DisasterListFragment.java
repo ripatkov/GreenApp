@@ -40,7 +40,7 @@ public class DisasterListFragment extends ListFragment {
         Disaster d=((DisasterAdapter)getListAdapter()).getItem(position);
         Log.d(TAG, d.getTitle() + "was clicked");
 
-        //launching DisasterActivity (detailed info)
+        //launching DisasterPagerActivity (detailed info)
         Intent i = new Intent(getActivity(),DisasterPagerActivity.class);
         i.putExtra(DisasterFragment.EXTRA_DISASTER_ID,d.getId());
         startActivity(i);

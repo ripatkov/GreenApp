@@ -28,10 +28,6 @@ public class DisasterPagerActivity extends FragmentActivity {
         mViewPager.setId(R.id.viewPager);
         setContentView(mViewPager);
 
-
-        //ActionBar actionBar = getSupportActionBar();
-        //actionBar.setDisplayHomeAsUpEnabled(true);
-
         mDisasters = DisasterStorage.get(this).getDisasters();
 
         FragmentManager fm = getSupportFragmentManager();
@@ -49,7 +45,7 @@ public class DisasterPagerActivity extends FragmentActivity {
             }
         });
 
-        final UUID disasterID = (UUID) getIntent().getSerializableExtra(DisasterFragment.EXTRA_DISASTER_ID);
+        UUID disasterID = (UUID) getIntent().getSerializableExtra(DisasterFragment.EXTRA_DISASTER_ID);
         setTitle(DisasterStorage.get(this).getDisaster(disasterID).getTitle());
         for (int i = 0; i < mDisasters.size(); i++) {
             if (mDisasters.get(i).getId().equals(disasterID)) {
@@ -61,7 +57,6 @@ public class DisasterPagerActivity extends FragmentActivity {
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override

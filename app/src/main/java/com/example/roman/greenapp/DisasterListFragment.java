@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.Menu;
+
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -25,6 +29,7 @@ public class DisasterListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         //getActivity().setTitle(R.string.disasters_title);
         mDisasters=DisasterStorage.get(getActivity()).getDisasters();
         /*ArrayAdapter<Disaster> adapter = new ArrayAdapter<Disaster>(getActivity(),android.R.layout.simple_list_item_1,mDisasters);
@@ -42,7 +47,7 @@ public class DisasterListFragment extends ListFragment {
 
         //launching DisasterPagerActivity (detailed info)
         Intent i = new Intent(getActivity(),DisasterPagerActivity.class);
-        i.putExtra(DisasterFragment.EXTRA_DISASTER_ID,d.getId());
+        i.putExtra(DisasterFragment.EXTRA_DISASTER_ID, d.getId());
         startActivity(i);
     }
 
@@ -52,6 +57,31 @@ public class DisasterListFragment extends ListFragment {
         super.onResume();
         ((DisasterAdapter)getListAdapter()).notifyDataSetChanged();
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_new_disaster:
+                Disaster d = new Disaster();
+                DisasterStorage.get(getActivity()).addDisaster(d);
+                //mDisasters.add(d);
+                Intent i = new Intent(getActivity(), DisasterPagerActivity.class);
+                i.putExtra(DisasterFragment.EXTRA_DISASTER_ID, d.getId());
+                startActivityForResult(i, 0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
 
     private class DisasterAdapter extends ArrayAdapter<Disaster> {
         public DisasterAdapter(ArrayList<Disaster> disasters){

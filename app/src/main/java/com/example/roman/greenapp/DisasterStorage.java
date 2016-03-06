@@ -23,12 +23,7 @@ public class DisasterStorage {
     private DisasterStorage(Context appContext){
         mAppContext=appContext;
         mDisasters=new ArrayList<Disaster>();
-        for (int i=0;i < 100;i++){
-            Disaster d = new Disaster();
-            d.setTitle("Disaster #"+i);
-            d.setSolved(i%2==0);
-            mDisasters.add(d);
-        }
+
     }
     public static DisasterStorage get(Context c){
         if (sDisasterStorage==null){
@@ -60,5 +55,9 @@ public class DisasterStorage {
             Log.e(TAG, "Error saving disasters: ", e);
             return false;
         }
+    }
+
+    public void addDisaster(Disaster d) {
+        mDisasters.add(d);
     }
 }

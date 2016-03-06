@@ -2,7 +2,10 @@ package com.example.roman.greenapp;
 
 
 
-import android.app.FragmentManager;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -16,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class DisasterFragment extends Fragment {
@@ -25,6 +29,7 @@ public class DisasterFragment extends Fragment {
     private CheckBox mSolvedCheckBox;
     private TextView mLatitudeTextView, mLongitudeTextView, mAltitudeTextView;
     public static final String EXTRA_DISASTER_ID="com.example.roman.ecologyapp.disaster_id";
+    private static final int REQUEST_DATE=0;
     private static final String DIALOG_DATE = "date";
 
     public DisasterFragment() {
@@ -35,7 +40,7 @@ public class DisasterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID disasterId=(UUID)getArguments().getSerializable(EXTRA_DISASTER_ID);
         mDisaster=DisasterStorage.get(getActivity()).getDisaster(disasterId);
-
+        //setHasOptionsMenu(true);
 
 
     }
@@ -44,6 +49,7 @@ public class DisasterFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.content_main, container, false);
+
         mTitleField=(EditText)rootView.findViewById(R.id.disaster_title);
         mTitleField.setText(mDisaster.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
@@ -69,14 +75,16 @@ public class DisasterFragment extends Fragment {
 
         mDateButton = (Button)rootView.findViewById(R.id.disaster_date);
         //mDateButton.setText(DateFormat.getDateTimeInstance().format(mDisaster.getDate()));
-        mDateButton.setText(mDisaster.getDate().toString());
+        updateDate();
         //mDateButton.setEnabled(false);
         mDateButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 FragmentManager fm = getActivity()
-                        .getFragmentManager();
-                DatePickerFragment dialog = new DatePickerFragment();
-                dialog.show(fm,DIALOG_DATE);
+                        .getSupportFragmentManager();
+                //DatePickerFragment dialog = new DatePickerFragment();
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mDisaster.getDate());
+                dialog.setTargetFragment(DisasterFragment.this, REQUEST_DATE);
+                dialog.show(fm, DIALOG_DATE);
             }
         });
 
@@ -104,6 +112,21 @@ public class DisasterFragment extends Fragment {
     {
         super.onPause();
         DisasterStorage.get(getActivity()).saveDisasters();
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (resultCode!= Activity.RESULT_OK)
+            return;
+        if (requestCode == REQUEST_DATE) {
+            Date date = (Date)data
+                    .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mDisaster.setDate(date);
+            updateDate();
+        }
+
+    }
+    private void updateDate() {
+        mDateButton.setText(mDisaster.getDate().toString());
     }
 }
 

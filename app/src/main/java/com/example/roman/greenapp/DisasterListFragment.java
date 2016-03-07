@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -37,6 +40,14 @@ public class DisasterListFragment extends ListFragment {
         DisasterAdapter adapter = new DisasterAdapter(mDisasters);
         setListAdapter(adapter);
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        View v = super.onCreateView(inflater, parent, savedInstanceState);
+        ListView listView = (ListView)v.findViewById(android.R.id.list);
+        registerForContextMenu(listView);
+        return v;
     }
 
     @Override
@@ -81,6 +92,27 @@ public class DisasterListFragment extends ListFragment {
 
         }
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
+        getActivity().getMenuInflater().inflate(R.menu.disaster_list_item_context,menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =(AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int position = info.position;
+        DisasterAdapter adapter = (DisasterAdapter)getListAdapter();
+        Disaster disaster = adapter.getItem(position);
+        switch(item.getItemId()) {
+            case R.id.menu_item_delete_disaster:
+                DisasterStorage.get(getActivity()).deleteDisaster(disaster);
+                adapter.notifyDataSetChanged();
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
 
 
     private class DisasterAdapter extends ArrayAdapter<Disaster> {

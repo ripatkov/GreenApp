@@ -60,4 +60,8 @@ public class DisasterStorage {
     public void addDisaster(Disaster d) {
         mDisasters.add(d);
     }
+    public void deleteDisaster(Disaster d) {
+        mDisasters.remove(d);
+    }
 }
+

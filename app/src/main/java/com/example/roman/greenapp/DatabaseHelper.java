@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "disaster.sqlite";
     private static final int DB_VERSION = 1;
+    private static final String DISASTERS_TABLE_NAME = "disasters";
+    private static final String DISASTERS_TABLE_CREATE ="CREATE TABLE " + DISASTERS_TABLE_NAME+"(disaster_id text primary key, title text, solved integer, date integer, latitude real, longitude real, altitude real);";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -18,8 +20,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-    //Create table "disaster"
-        db.execSQL("CREATE TABLE disaster(" + "_id integer primary key autoincrement, title text, solved integer, date integer, latitude real, longitude real, altitude real");
+    //Create table "disasters"
+        db.execSQL(DISASTERS_TABLE_CREATE);
     }
 
     @Override
@@ -32,6 +34,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("title",disaster.getTitle());
         cv.put("solved",disaster.isSolved());
         cv.put("date", disaster.getDate().getTime());
-        return getWritableDatabase().insert("disaster",null,cv);
+        return getWritableDatabase().insert(DISASTERS_TABLE_NAME,null,cv);
     }
 }

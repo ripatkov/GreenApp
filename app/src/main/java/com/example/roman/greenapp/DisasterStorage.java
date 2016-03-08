@@ -1,6 +1,7 @@
 package com.example.roman.greenapp;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -18,11 +19,14 @@ public class DisasterStorage {
     private static DisasterStorage sDisasterStorage;
     private Context mAppContext;
     private ArrayList<Disaster> mDisasters;
-
+    private DatabaseHelper mDatabaseHelper;
+    private SQLiteDatabase mDB;
 
     private DisasterStorage(Context appContext){
         mAppContext=appContext;
         mDisasters=new ArrayList<Disaster>();
+        mDatabaseHelper = new DatabaseHelper(mAppContext);
+        mDB = mDatabaseHelper.getWritableDatabase();
 
     }
     public static DisasterStorage get(Context c){
@@ -59,6 +63,8 @@ public class DisasterStorage {
 
     public void addDisaster(Disaster d) {
         mDisasters.add(d);
+        mDatabaseHelper.insertDisaster(d);
+
     }
     public void deleteDisaster(Disaster d) {
         mDisasters.remove(d);
